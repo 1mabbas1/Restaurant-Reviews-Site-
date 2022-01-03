@@ -1,32 +1,45 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ReviewList from "../components/reviews/ReviewList";
 
-const DUMMY = [
-  {
-    id: "r1",
-    title: "Gokyuzu",
-    img: "https://gokyuzurestaurant.co.uk/wp-content/uploads/2016/12/Gokyuzu-Chingford_508.jpg",
-    location: "London",
-    rating: "6/10",
-    review: "bla bla bla",
-  },
-
-  {
-    id: "r2",
-    title: "Banana Tree",
-    img: "https://media-cdn.tripadvisor.com/media/photo-s/15/36/4d/33/bun-bo-noodle-salad.jpg",
-    location: "London",
-    rating: "4/10",
-    review: "bla bla bla",
-  },
-];
-
 function AllReviewsPage() {
+  const [loading, setLoading] = useState(true);
+  const [loadedReviews, setloadedReviews] = useState([]);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(
+      "https://my-restaurant-reviews-default-rtdb.europe-west1.firebasedatabase.app/reviews.json"
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        const reviews = [];
+        for (const key in data) {
+          const review = {
+            id: key,
+            ...data[key],
+          };
+          reviews.push(review);
+        }
+        setLoading(false);
+        setloadedReviews(reviews);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <React.Fragment>
       <div>
         <h1>All Reviews</h1>
-        <ReviewList items={DUMMY} />
+        <ReviewList items={loadedReviews} />
       </div>
     </React.Fragment>
   );
