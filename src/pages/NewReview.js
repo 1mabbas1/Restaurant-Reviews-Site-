@@ -1,11 +1,11 @@
 import React from "react";
+import NewReviewForm from "../components/reviews/NewReviewForm";
 
 function NewReviewPage() {
   return (
     <React.Fragment>
-      <div>
-        <h1>New Review</h1>
-      </div>
+      <h1>New Review</h1>
+      <NewReviewForm />
     </React.Fragment>
   );
 }
