@@ -24,6 +24,8 @@ function NewReviewForm(props) {
       rating: enteredRating,
       review: enteredReview,
     };
+
+    props.onAddReview(reviewData);
   }
 
   return (
